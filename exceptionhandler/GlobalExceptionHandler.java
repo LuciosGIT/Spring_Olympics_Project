@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
 	
-	@ExceptionHandler
+	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException e, HttpServletRequest request){
 		StandardError error = new StandardError();
 		error.setError(e.getMessage());
