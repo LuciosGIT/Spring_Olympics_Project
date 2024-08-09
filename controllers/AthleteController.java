@@ -3,8 +3,7 @@ package com.example.olympics.com.controllers;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;	
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.olympics.com.dtos.AthleteDTO;
 import com.example.olympics.com.services.AthleteService;
+import com.example.olympics.com.util.MediaType;
 
 @RestController
 @RequestMapping("/athletes")
@@ -26,21 +26,21 @@ public class AthleteController {
 	@Autowired
 	AthleteService service;
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<List<AthleteDTO>> findAll(){
 		List<AthleteDTO> athletes = service.findAll();
 		return ResponseEntity.ok().body(athletes);
 	}
 	
-	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<AthleteDTO> findById(@PathVariable Long id){
 		AthleteDTO athlete = service.findById(id);
 		return ResponseEntity.ok().body(athlete);
 	}
 	
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<Void> create(@RequestBody AthleteDTO athlete){
-		service.create(athlete);
+		service.create(athlete); 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(athlete.getId())
@@ -48,7 +48,7 @@ public class AthleteController {
 		return ResponseEntity.created(location).build();
 	}
 	
-	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AthleteDTO athlete){
 		athlete.setId(id);
 		service.update(athlete);
