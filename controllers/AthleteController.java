@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +26,19 @@ public class AthleteController {
 	@Autowired
 	AthleteService service;
 	
-	@GetMapping
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<List<AthleteDTO>> findAll(){
 		List<AthleteDTO> athletes = service.findAll();
 		return ResponseEntity.ok().body(athletes);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<AthleteDTO> findById(@PathVariable Long id){
 		AthleteDTO athlete = service.findById(id);
 		return ResponseEntity.ok().body(athlete);
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<Void> create(@RequestBody AthleteDTO athlete){
 		service.create(athlete);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -47,7 +48,7 @@ public class AthleteController {
 		return ResponseEntity.created(location).build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AthleteDTO athlete){
 		athlete.setId(id);
 		service.update(athlete);
