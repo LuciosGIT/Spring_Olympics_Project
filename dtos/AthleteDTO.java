@@ -3,7 +3,9 @@ package com.example.olympics.com.dtos;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class AthleteDTO implements Serializable{
+import org.springframework.hateoas.RepresentationModel;
+
+public class AthleteDTO extends RepresentationModel<AthleteDTO> implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 		private Long id;
