@@ -2,12 +2,18 @@ package com.example.olympics.com.domain;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+
 
 @Entity
 public class Olympics implements Serializable{
@@ -19,6 +25,18 @@ public class Olympics implements Serializable{
 	private String hostCity;
 	private Integer year;
 	private String countryWithMostMedals;
+	
+	public List<Athlete> getAthletes() {
+		return athletes;
+	}
+
+
+	@ManyToMany
+	@JoinTable(
+			name = "athlete_olympics",
+			joinColumns = @JoinColumn(name = "olympics_id"),
+			inverseJoinColumns = @JoinColumn(name = "athlete_id"))
+	private List<Athlete> athletes = new ArrayList<>();
 	
 	public Olympics() {
 		
