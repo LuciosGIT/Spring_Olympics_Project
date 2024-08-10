@@ -1,10 +1,14 @@
 package com.example.olympics.com.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.olympics.com.controllers.OlympicsController;
 import com.example.olympics.com.converters.OlympicsConverter;
 import com.example.olympics.com.dtos.OlympicsDTO;
 import com.example.olympics.com.exceptions.ObjectNotFoundException;
@@ -18,6 +22,7 @@ public class OlympicsService {
 	
 	public List<OlympicsDTO> findAll(){
 		List<OlympicsDTO> olympicsDtos = OlympicsConverter.convertListOfOlympicsToListOfOlympicsDto(repository.findAll());
+		olympicsDtos.stream().forEach(p -> p.add(linkTo(methodOn(OlympicsController.class).findById(p.getId())).withSelfRel()));
 		return olympicsDtos;
 	}
 	
@@ -25,6 +30,7 @@ public class OlympicsService {
 		OlympicsDTO olympicDto = OlympicsConverter.convertOlympicsToOlympicsDTO(repository
 				.findById(id)
 				.orElseThrow(() -> new ObjectNotFoundException("Object not found!")));
+		olympicDto.add(linkTo(methodOn(OlympicsController.class).findById(id)).withSelfRel());
 		return olympicDto;
 	}
 	
